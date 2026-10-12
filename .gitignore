@@ -1,0 +1,6 @@
+PLAN.md
+tools/
+__pycache__/
+.DS_Store
+qr/
+*.bak
