@@ -17,6 +17,7 @@ DONATE = {
 ALLOWED_EXTERNAL = set(DONATE.values()) | {
     "https://www.youtube.com/@DenTrave",
     "https://t.me/dentraveai",
+    "https://www.twitch.tv/dentraveai",
 }
 SECRET_PATTERNS = [r"gsk_[A-Za-z0-9]{10}", r"ghp_[A-Za-z0-9]{10}", r"napi_[A-Za-z0-9]{10}", r"rnd_[A-Za-z0-9]{10}",
                    r"sk-ant", r"\b\d{8,10}:[A-Za-z0-9_-]{30,}\b", r"BEGIN [A-Z ]*PRIVATE KEY", r"michelpct"]
