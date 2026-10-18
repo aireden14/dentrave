@@ -48,16 +48,18 @@ button { font: inherit; color: inherit; }
 
 /* ---------- фото ---------- */
 .photo { position: relative; aspect-ratio: 4 / 5; max-height: 78vh; max-height: 78svh; width: 100%; overflow: hidden; }
-.photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; filter: brightness(.84); }
-.photo::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, rgba(7, 8, 12, .55) 0, rgba(7, 8, 12, 0) 20%, rgba(7, 8, 12, 0) 48%, rgba(7, 8, 12, .62) 70%, var(--bg) 93%);
+.photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+.shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(7, 8, 12, .55) 0, rgba(7, 8, 12, 0) 20%, rgba(7, 8, 12, 0) 48%, rgba(7, 8, 12, .62) 70%, var(--bg) 93%),
+    linear-gradient(rgba(7, 8, 12, .16), rgba(7, 8, 12, .16));
 }
 
 /* ---------- заголовок ---------- */
 .copy { position: relative; margin-top: -132px; padding: 0 var(--pad) 22px; }
 .eyebrow { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
-.eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
 h1 { margin-top: 10px; font-size: clamp(42px, 13vw, 68px); line-height: .98; letter-spacing: -.035em; font-weight: 800; }
 .lead { margin-top: 14px; max-width: 30ch; font-size: 17px; color: var(--mute); }
 
@@ -127,6 +129,11 @@ h1 { margin-top: 10px; font-size: clamp(42px, 13vw, 68px); line-height: .98; let
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 }
 
+/* ---------- телефоны: три ссылки в шапке не помещаются рядом с названием ---------- */
+@media (max-width: 520px) {
+  .brand-name { display: none; }
+}
+
 /* ---------- узкие телефоны ---------- */
 @media (max-width: 359px) {
   :root { --pad: 14px; }
@@ -139,36 +146,81 @@ h1 { margin-top: 10px; font-size: clamp(42px, 13vw, 68px); line-height: .98; let
   :root { --pad: 28px; }
   .photo { aspect-ratio: 16 / 11; max-height: 70vh; }
   .photo img { object-position: 50% 24%; }
-  .photo::after { background: linear-gradient(180deg, rgba(7, 8, 12, .5) 0, rgba(7, 8, 12, 0) 20%, rgba(7, 8, 12, 0) 52%, rgba(7, 8, 12, .7) 80%, var(--bg) 100%); }
+  .shade { background: linear-gradient(180deg, rgba(7, 8, 12, .5) 0, rgba(7, 8, 12, 0) 20%, rgba(7, 8, 12, 0) 52%, rgba(7, 8, 12, .7) 80%, var(--bg) 100%), linear-gradient(rgba(7, 8, 12, .16), rgba(7, 8, 12, .16)); }
   .copy { margin-top: -150px; }
   .ways, .free, .thanks, .foot { max-width: 640px; margin-inline: auto; width: 100%; }
 }
 
-/* ---------- ноутбук и телевизор: лицо слева, тёмное крыло справа ---------- */
+/* ---------- компьютер и телевизор: один экран, лицо слева, тёмное крыло справа ---------- */
+/* Размеры растут вместе с шириной окна (vw) до 4K, высота окна двигает только отступы (vh). Тени и точки - настоящие элементы, не псевдо. */
 @media (min-width: 900px) {
-  :root { --pad: 0px; }
-  .stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(420px, 540px); column-gap: 0; padding-right: clamp(32px, 6vw, 120px); }
-  .stage > .photo { grid-column: 1; grid-row: 1 / span 7; position: sticky; top: 0; align-self: start; height: 100vh; height: 100svh; max-height: none; aspect-ratio: auto; }
-  .photo img { object-position: 50% 28%; }
-  .photo::after {
-    background:
-      linear-gradient(90deg, rgba(7, 8, 12, 0) 38%, rgba(7, 8, 12, .1) 52%, rgba(7, 8, 12, .45) 68%, rgba(7, 8, 12, .86) 86%, var(--bg) 100%),
-      linear-gradient(180deg, rgba(7, 8, 12, .4) 0, rgba(7, 8, 12, 0) 22%);
+  :root { --pad: 0px; --gut: clamp(32px, 5.8vw, 220px); }
+  .stage {
+    display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 10fr);
+    grid-template-rows: auto auto auto auto auto 1fr;
+    min-height: 100vh; min-height: 100svh;
+    overflow: hidden;
   }
-  .stage > :not(.photo) { grid-column: 2; }
-  .top { position: static; grid-row: 1; padding: 28px 0 0; margin-left: 0; }
-  .top, .copy, .ways, .free, .thanks, .foot { padding-left: 0; padding-right: 0; }
-  .copy { margin-top: 0; padding-top: clamp(24px, 9vh, 96px); padding-bottom: 28px; }
-  .free, .thanks { padding-top: 40px; }
-  .foot { padding-bottom: 40px; }
-  h1 { font-size: clamp(56px, 6vw, 84px); }
-  .lead { font-size: 19px; max-width: 34ch; }
+  .stage > .photo { grid-column: 1; grid-row: 1 / -1; position: relative; aspect-ratio: auto; max-height: none; height: auto; }
+  .photo img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-position: 50% 26%; }
+  .shade {
+    background:
+      linear-gradient(90deg, rgba(7, 8, 12, 0) 36%, rgba(7, 8, 12, .1) 50%, rgba(7, 8, 12, .45) 68%, rgba(7, 8, 12, .88) 86%, var(--bg) 100%),
+      linear-gradient(180deg, rgba(7, 8, 12, .38) 0, rgba(7, 8, 12, 0) 20%, rgba(7, 8, 12, 0) 78%, rgba(7, 8, 12, .55) 100%),
+      linear-gradient(rgba(7, 8, 12, .14), rgba(7, 8, 12, .14));
+  }
+  .stage > :not(.photo) { grid-column: 2; width: 100%; max-width: 1500px; padding-left: 0; padding-right: var(--gut); }
+  .top { position: static; grid-row: 1; padding-top: clamp(18px, 3.2vh, 48px); padding-bottom: 0; }
+  .mark { width: clamp(70px, 5vw, 150px); }
+  .brand-name { font-size: clamp(17px, 1.2vw, 34px); }
+  .top-links a { font-size: clamp(14px, 1vw, 26px); padding: .5em .9em; }
+  .copy { grid-row: 2; margin-top: 0; padding-top: clamp(16px, 4vh, 90px); padding-bottom: clamp(14px, 2.2vh, 36px); }
+  .eyebrow { font-size: clamp(13px, .9vw, 24px); }
+  h1 { margin-top: clamp(8px, 1.2vh, 20px); font-size: clamp(54px, 5.1vw, 160px); }
+  .lead { margin-top: clamp(10px, 1.5vh, 24px); max-width: 38ch; font-size: clamp(18px, 1.15vw, 32px); }
+  .ways { grid-row: 3; }
+  .free { grid-row: 4; padding-top: clamp(18px, 3vh, 56px); }
+  .free h2 { font-size: clamp(21px, 1.45vw, 40px); }
+  .free p { font-size: clamp(14px, 1vw, 26px); }
+  .free-row { margin-top: clamp(12px, 1.8vh, 26px); gap: clamp(10px, .6vw, 16px); }
+  .btn { min-height: clamp(44px, 3vw, 80px); padding: .6em 1.25em; font-size: clamp(15px, 1vw, 26px); }
+  .free .stream-note { font-size: clamp(13px, .9vw, 23px); }
+  .thanks { display: none; }
+  .foot { grid-row: 5; padding-top: clamp(14px, 2.2vh, 40px); padding-bottom: clamp(14px, 2.4vh, 40px); font-size: clamp(12px, .8vw, 20px); }
 }
 
-/* широкие экраны и телевизор */
-@media (min-width: 1500px) {
-  html { font-size: 18px; }
-  .stage { grid-template-columns: minmax(0, 1fr) 660px; }
+/* три способа в ряд - только когда хватает ширины */
+@media (min-width: 1200px) {
+  .lead { max-width: none; font-size: clamp(17px, 1.1vw, 32px); }
+  .ways { grid-row: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, .9vw, 24px); }
+  .way { flex-direction: column; align-items: flex-start; gap: 0; min-height: 0; padding: clamp(14px, 1.1vw, 30px); border-radius: clamp(20px, 1.5vw, 40px); position: relative; }
+  .ico { width: clamp(46px, 3.2vw, 90px); height: clamp(46px, 3.2vw, 90px); border-radius: 30%; }
+  .ico svg { width: 52%; height: 52%; }
+  .txt { flex: none; width: 100%; margin-top: clamp(14px, 2.2vh, 36px); }
+  .txt b { font-size: clamp(19px, 1.3vw, 36px); }
+  .txt span { font-size: clamp(13px, .9vw, 24px); }
+  .go { position: absolute; top: clamp(14px, 1.1vw, 30px); right: clamp(14px, 1.1vw, 30px); width: clamp(40px, 2.7vw, 76px); height: clamp(40px, 2.7vw, 76px); }
+  .go svg { width: 46%; height: 46%; }
+}
+
+.stream-note { font-size: clamp(13px, .9vw, 16px); }
+  .thanks { display: none; }
+  .foot { grid-row: 5; align-self: end; padding-top: clamp(14px, 2.4vh, 28px); padding-bottom: clamp(16px, 3vh, 34px); font-size: clamp(12px, .8vw, 14px); }
+}
+
+/* три способа в ряд - только когда хватает ширины */
+@media (min-width: 1200px) {
+  .ways { grid-row: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, .9vw, 16px); }
+  .way { flex-direction: column; align-items: flex-start; gap: 0; min-height: 0; padding: clamp(14px, 1.1vw, 20px); border-radius: clamp(20px, 1.5vw, 28px); position: relative; }
+  .ico { width: clamp(46px, 3.2vw, 60px); height: clamp(46px, 3.2vw, 60px); border-radius: 17px; }
+  .txt { flex: none; width: 100%; margin-top: clamp(14px, 2.2vh, 24px); }
+  .txt b { font-size: clamp(19px, 1.3vw, 25px); }
+  .txt span { font-size: clamp(13px, .9vw, 16px); }
+  .go { position: absolute; top: clamp(14px, 1.1vw, 20px); right: clamp(14px, 1.1vw, 20px); width: clamp(40px, 2.7vw, 50px); height: clamp(40px, 2.7vw, 50px); }
+}
+
+@media (min-width: 900px) and (min-height: 1100px) {
+  .stage { min-height: 100vh; min-height: 100svh; }
 }
 
 .stream-note { margin: 14px 0 0; font-size: 14px; line-height: 1.45; color: rgba(255, 255, 255, .7); }
