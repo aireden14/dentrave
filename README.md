@@ -1,7 +1,7 @@
 # DenTrave - страница «Поддержать канал»
 
 Мобильная одностраничная витрина: донат из России (CloudTips), из-за рубежа (Destream), скоро Boosty, плюс YouTube и Telegram.
-Живой адрес: https://aireden14.github.io/dentrave/ (в QR ведёт сюда).
+Живой адрес: https://dentrave.com/ (с 08.11.2026; прежний aireden14.github.io/dentrave/ перенаправляет сюда; в QR - новый адрес).
 
 ## Из чего состоит
 `index.html`, `style.css`, `app.js` (только кнопка «Отправить ссылку»), `img/` (кадры с Деном, OG-картинка, иконки). Больше ничего:

@@ -6,7 +6,7 @@ from html.parser import HTMLParser
 from urllib.parse import urlparse
 
 ROOT = pathlib.Path(__file__).resolve().parent
-SITE_URL = "https://aireden14.github.io/dentrave/"
+SITE_URL = "https://dentrave.com/"
 
 # Ровно то, что прислал Денис (12.10.2026), без правок.
 DONATE = {
