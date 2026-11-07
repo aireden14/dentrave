@@ -1,23 +1,25 @@
 :root {
   --bg: #07080c;
-  --card: #12141c;
-  --card-hi: #181b26;
+  --card: rgba(255, 255, 255, .06);
+  --card-hi: rgba(255, 255, 255, .1);
   --text: #fff;
-  --mute: rgba(255, 255, 255, .64);
+  --mute: rgba(255, 255, 255, .66);
   --red: #e8322b;
-  --pad: 18px;
+  --red-hi: #ff5148;
+  --pad: 1.25rem;
+  --ease: cubic-bezier(.2, .7, .2, 1);
   color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
 
-html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; background: var(--bg); scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font: 400 16px/1.45 "Helvetica Neue", -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  font: 400 1rem/1.45 "Helvetica Neue", -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", Roboto, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   min-height: 100svh;
@@ -26,25 +28,28 @@ body {
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
-:focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 14px; }
+ul { list-style: none; padding: 0; }
+:focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: .9rem; }
 
 .stage { position: relative; }
 
 /* ---------- верхняя панель ---------- */
 .top {
   position: absolute; inset: 0 0 auto 0; z-index: 5;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: max(env(safe-area-inset-top), 14px) var(--pad) 0;
+  display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+  padding: max(env(safe-area-inset-top), .875rem) var(--pad) 0;
 }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.mark { width: 70px; height: auto; flex: none; }
-.brand-name { font-weight: 700; font-size: 17px; letter-spacing: -.01em; text-shadow: 0 1px 12px rgba(0, 0, 0, .6); }
-.top-links { display: flex; gap: 8px; }
+.brand { display: flex; align-items: center; gap: .625rem; text-decoration: none; }
+.mark { width: 4.4rem; height: auto; flex: none; }
+.brand-name { font-weight: 700; font-size: 1.0625rem; letter-spacing: -.01em; text-shadow: 0 1px 12px rgba(0, 0, 0, .6); }
+.top-links { display: flex; gap: .5rem; }
 .top-links a {
-  text-decoration: none; font-size: 14px; font-weight: 600;
-  padding: 8px 13px; border-radius: 999px;
+  text-decoration: none; font-size: .875rem; font-weight: 600;
+  padding: .5rem .8rem; border-radius: 999px;
   background: rgba(7, 8, 12, .5); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  transition: background .2s ease;
 }
+.top-links a:hover { background: rgba(7, 8, 12, .8); }
 
 /* ---------- фото ---------- */
 .photo { position: relative; aspect-ratio: 4 / 5; max-height: 78vh; max-height: 78svh; width: 100%; overflow: hidden; }
@@ -57,209 +62,295 @@ button { font: inherit; color: inherit; }
 }
 
 /* ---------- заголовок ---------- */
-.copy { position: relative; margin-top: -132px; padding: 0 var(--pad) 22px; }
-.eyebrow { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
-h1 { margin-top: 10px; font-size: clamp(42px, 13vw, 68px); line-height: .98; letter-spacing: -.035em; font-weight: 800; }
-.lead { margin-top: 14px; max-width: 30ch; font-size: 17px; color: var(--mute); }
+.copy { position: relative; margin-top: -8.25rem; padding: 0 var(--pad) 1.5rem; }
+.eyebrow { display: flex; align-items: center; gap: .5rem; font-size: .8125rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.dot { width: .45rem; height: .45rem; border-radius: 50%; background: var(--red); box-shadow: 0 0 .7rem var(--red); flex: none; }
+h1 { margin-top: .625rem; font-size: clamp(2.6rem, 13vw, 4.25rem); line-height: .98; letter-spacing: -.035em; font-weight: 800; }
+.lead { margin-top: .875rem; max-width: 30ch; font-size: 1.0625rem; color: var(--mute); }
 
 /* ---------- способы поддержки ---------- */
-.ways { display: grid; gap: 12px; padding: 0 var(--pad); }
+.ways { display: grid; gap: .75rem; padding: 0 var(--pad); }
 .way {
-  display: flex; align-items: center; gap: 14px;
-  min-height: 84px; padding: 14px 14px 14px 14px;
-  background: var(--card); border-radius: 24px; text-decoration: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
-  transition: transform .18s ease, background .18s ease;
+  position: relative;
+  display: flex; align-items: center; gap: .875rem;
+  min-height: 5.25rem; padding: .875rem;
+  background: var(--card); border-radius: 1.5rem; text-decoration: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+  transition: transform .2s var(--ease), background .2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 .way:hover { background: var(--card-hi); }
 .way:active { transform: scale(.985); }
-.ico { width: 54px; height: 54px; border-radius: 17px; background: rgba(255, 255, 255, .07); display: grid; place-items: center; flex: none; }
-.ico svg { width: 26px; height: 26px; fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-.txt { display: grid; gap: 2px; min-width: 0; flex: 1; }
-.txt b { font-size: 19px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
-.txt span { font-size: 14px; color: var(--mute); overflow-wrap: anywhere; }
-.go { width: 46px; height: 46px; border-radius: 50%; background: var(--red); display: grid; place-items: center; flex: none; }
-.go svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.pill { flex: none; font-size: 13px; font-weight: 700; padding: 7px 12px; border-radius: 999px; background: rgba(255, 255, 255, .09); color: var(--mute); }
-.way.soon { background: rgba(18, 20, 28, .6); }
-.way.soon .ico svg { opacity: .6; }
-.way.soon .txt b { color: rgba(255, 255, 255, .78); }
+.ico { width: 3.375rem; height: 3.375rem; border-radius: 1.05rem; background: rgba(255, 255, 255, .08); display: grid; place-items: center; flex: none; }
+.ico svg { width: 1.625rem; height: 1.625rem; fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.txt { display: grid; gap: .125rem; min-width: 0; flex: 1; }
+.txt b { font-size: 1.1875rem; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
+.txt span { font-size: .875rem; color: var(--mute); overflow-wrap: anywhere; }
+.go { width: 2.875rem; height: 2.875rem; border-radius: 50%; background: rgba(255, 255, 255, .12); display: grid; place-items: center; flex: none; transition: transform .25s var(--ease); }
+.go svg { width: 1.375rem; height: 1.375rem; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.way:hover .go { transform: translateX(.2rem); }
 
-/* ---------- бесплатная поддержка ---------- */
-.free { padding: 34px var(--pad) 0; }
-.free h2 { font-size: 22px; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
-.free p { margin-top: 8px; color: var(--mute); }
-.free-row { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 10px; }
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; text-align: center; text-decoration: none;
-  min-height: 48px; padding: 12px 20px; border-radius: 999px; border: 0; cursor: pointer;
-  font-size: 16px; font-weight: 600; background: rgba(255, 255, 255, .09);
-  transition: background .18s ease, transform .18s ease; -webkit-tap-highlight-color: transparent;
+/* главный способ - CloudTips */
+.way-main {
+  min-height: 6.5rem;
+  background:
+    radial-gradient(120% 160% at 100% 0%, rgba(255, 120, 110, .55) 0, rgba(255, 120, 110, 0) 55%),
+    linear-gradient(135deg, #f0463e 0%, #e8322b 45%, #b0211b 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 1.1rem 3rem -1rem rgba(232, 50, 43, .6);
 }
-.btn:hover { background: rgba(255, 255, 255, .15); }
-.btn:active { transform: scale(.98); }
+.way-main:hover { background:
+    radial-gradient(120% 160% at 100% 0%, rgba(255, 140, 130, .6) 0, rgba(255, 140, 130, 0) 55%),
+    linear-gradient(135deg, #f55a52 0%, #ee3a32 45%, #b8241e 100%); }
+.way-main .ico { background: rgba(255, 255, 255, .2); }
+.way-main .txt b { font-size: 1.375rem; }
+.way-main .txt span { color: rgba(255, 255, 255, .88); }
+.way-main .go { background: #fff; }
+.way-main .go svg { stroke: #c4241d; }
 
 /* ---------- крипта ---------- */
-.crypto { padding: 34px var(--pad) 0; }
-.crypto h2 { font-size: 22px; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
-.crypto > p:not(.crypto-warn) { margin-top: 8px; color: var(--mute); }
-.wallets { margin-top: 16px; display: grid; gap: 12px; }
+.crypto { padding: 2.25rem var(--pad) 0; }
+.crypto h2, .free h2 { font-size: 1.5rem; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
+.crypto > p:not(.crypto-warn), .free > p { margin-top: .5rem; color: var(--mute); }
+.wallets { margin-top: 1rem; display: grid; gap: .75rem; }
 .wallet {
-  display: grid; gap: 10px; grid-template-rows: 1fr auto auto; padding: 14px;
-  background: var(--card); border-radius: 24px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+  display: grid; gap: .65rem; grid-template-rows: 1fr auto auto; padding: .9rem;
+  background: var(--card); border-radius: 1.5rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
 }
-.wtxt { display: grid; gap: 2px; align-content: start; min-width: 0; }
-.wtxt b { font-size: 17px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
-.wtxt span { font-size: 13px; line-height: 1.35; color: var(--mute); overflow-wrap: anywhere; }
+.wallet[hidden] { display: none; }
+.wtxt { display: grid; gap: .125rem; align-content: start; min-width: 0; }
+.wtxt b { font-size: 1.0625rem; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
+.wtxt span { font-size: .8125rem; line-height: 1.35; color: var(--mute); overflow-wrap: anywhere; }
 .wallet code {
-  display: block; padding: 10px 12px; border-radius: 14px; background: rgba(255, 255, 255, .06);
-  font: 500 13px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: rgba(255, 255, 255, .88);
+  display: block; padding: .65rem .75rem; border-radius: .9rem; background: rgba(0, 0, 0, .35);
+  font: 500 .8125rem/1.45 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: rgba(255, 255, 255, .92);
   overflow-wrap: anywhere; word-break: break-all;
 }
 .cbtn {
-  min-height: 44px; padding: 10px 18px; border: 0; border-radius: 999px; cursor: pointer;
-  font-size: 15px; font-weight: 600; background: rgba(255, 255, 255, .09);
-  transition: background .18s ease, transform .18s ease; -webkit-tap-highlight-color: transparent;
+  min-height: 2.75rem; padding: .625rem 1.1rem; border: 0; border-radius: 999px; cursor: pointer;
+  font-size: .9375rem; font-weight: 600; background: rgba(255, 255, 255, .1);
+  transition: background .2s ease, transform .2s ease; -webkit-tap-highlight-color: transparent;
 }
-.cbtn:hover { background: rgba(255, 255, 255, .15); }
+.cbtn:hover { background: rgba(255, 255, 255, .17); }
 .cbtn:active { transform: scale(.98); }
 .cbtn.done { background: var(--red); }
-.crypto-warn { margin-top: 12px; font-size: 13px; line-height: 1.45; color: rgba(255, 255, 255, .7); }
-@media (min-width: 600px) { .wallets { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.crypto-warn { margin-top: .75rem; font-size: .8125rem; line-height: 1.45; color: rgba(255, 255, 255, .7); }
 
-/* ---------- спасибо ---------- */
-.thanks { padding: 34px var(--pad) 0; }
-.thanks figure { position: relative; border-radius: 26px; overflow: hidden; }
-.thanks figure img { width: 100%; height: auto; filter: brightness(.82); }
-.thanks figure::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(7, 8, 12, 0) 40%, rgba(7, 8, 12, .86) 100%); }
-.thanks figcaption { position: absolute; left: 18px; right: 18px; bottom: 16px; z-index: 1; display: grid; gap: 2px; text-shadow: 0 2px 14px rgba(0, 0, 0, .55); }
-.thanks figcaption b { font-size: 22px; line-height: 1.15; letter-spacing: -.02em; }
-.thanks figcaption span { color: var(--mute); font-size: 15px; }
-.share { margin-top: 14px; width: 100%; }
+/* вкладки сетей: появляются, когда работает скрипт */
+.crypto.tabs-on .wallets { margin-top: .75rem; }
+.crypto.tabs-on .wallet { padding: 1.1rem; gap: .8rem; }
+.crypto.tabs-on .wallet .wtxt b { font-size: 1.25rem; }
+.crypto.tabs-on .cbtn { background: var(--red); min-height: 3rem; font-size: 1rem; }
+.crypto.tabs-on .cbtn:hover { background: var(--red-hi); }
+.crypto.tabs-on .cbtn.done { background: #1f8f4e; }
+.tabs { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+.tab {
+  min-height: 2.5rem; padding: .5rem .8rem; border: 0; border-radius: 999px; cursor: pointer;
+  font-size: .875rem; font-weight: 600; background: var(--card);
+  transition: background .2s ease; -webkit-tap-highlight-color: transparent;
+}
+.tab:hover { background: var(--card-hi); }
+.tab[aria-selected="true"] { background: #fff; color: #07080c; }
+@media (min-width: 600px) { .crypto:not(.tabs-on) .wallets { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---------- бесплатная поддержка ---------- */
+.free { padding: 2.25rem var(--pad) 0; }
+.free-row { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: .625rem; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; text-align: center; text-decoration: none;
+  min-height: 3rem; padding: .75rem 1.25rem; border-radius: 999px; border: 0; cursor: pointer;
+  font-size: 1rem; font-weight: 600; background: rgba(255, 255, 255, .09);
+  transition: background .2s ease, transform .2s ease; -webkit-tap-highlight-color: transparent;
+}
+.btn:hover { background: rgba(255, 255, 255, .16); }
+.btn:active { transform: scale(.98); }
+.stream-note { margin-top: .875rem; font-size: .875rem; line-height: 1.45; color: rgba(255, 255, 255, .7); }
+.share { margin-top: .875rem; width: 100%; }
 .share[hidden] { display: none; }
 
+/* ---------- спасибо вам ---------- */
+.gratitude { position: relative; margin-top: 3rem; overflow: hidden; background: var(--bg); }
+.gphoto { position: relative; aspect-ratio: 4 / 3; }
+.gphoto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 26%; filter: brightness(.8); }
+.gshade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(7, 8, 12, .4) 0, rgba(7, 8, 12, 0) 24%, rgba(7, 8, 12, .5) 60%, var(--bg) 90%, var(--bg) 100%);
+}
+.gwrap { position: relative; padding: 0 var(--pad); }
+.gtext { position: relative; z-index: 2; margin-top: -5.5rem; }
+.gratitude h2 { display: flex; align-items: center; gap: .6rem; font-size: clamp(2.2rem, 10.5vw, 3.4rem); line-height: 1; font-weight: 800; letter-spacing: -.035em; }
+.heart { width: .8em; height: .8em; flex: none; fill: var(--red); filter: drop-shadow(0 0 .6rem rgba(232, 50, 43, .75)); }
+.gratitude-lead { margin-top: .65rem; max-width: 30ch; font-size: 1.0625rem; color: var(--mute); }
+.sky { position: relative; margin-top: 1.1rem; }
+.glow { display: none; }
+.donors { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem 1.2rem; padding: .5rem 0; }
+.donors li { font-size: 1.2rem; font-weight: 700; letter-spacing: -.01em; text-shadow: 0 0 1.4rem rgba(232, 50, 43, .55); }
+.donors-more { position: relative; margin-top: .85rem; padding-bottom: 3rem; text-align: center; font-size: .9375rem; color: var(--mute); }
+
+/* имена плывут вверх, когда работает скрипт и не выбрано «уменьшить движение» */
+.sky.fly {
+  --h: 30rem;
+  height: var(--h); overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 90%, transparent 100%);
+}
+.sky.fly .glow {
+  display: block; position: absolute; inset: 10% -15% 0;
+  background: radial-gradient(50% 52% at 50% 62%, rgba(232, 50, 43, .22), rgba(232, 50, 43, 0) 72%);
+  pointer-events: none;
+}
+.sky.fly .donors { display: block; position: absolute; inset: 0; padding: 0; }
+.sky.fly .donors li {
+  position: absolute; left: calc(var(--x, 0) * 1px); top: var(--h);
+  width: max-content; max-width: calc(var(--W, 320) * .8px);
+  font-size: calc(1.15rem * var(--s, 1)); line-height: 1.2; text-align: center;
+  text-shadow: 0 0 1.5rem rgba(232, 50, 43, .6), 0 .05rem .3rem rgba(0, 0, 0, .7);
+  opacity: 0; will-change: transform, opacity;
+  animation: float var(--cycle, 36s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+.sky.fly .donors li span {
+  display: block;
+  animation: sway var(--sd, 6s) ease-in-out infinite alternate;
+  animation-delay: var(--sdl, 0s);
+}
+.spark {
+  position: absolute; left: calc(var(--sx, 50) * 1%); top: var(--h);
+  width: var(--sz, 4px); height: var(--sz, 4px); border-radius: 50%;
+  background: #fff; box-shadow: 0 0 .55rem .12rem rgba(232, 50, 43, .75);
+  opacity: 0; pointer-events: none;
+  animation: spark var(--sdur, 12s) linear infinite;
+  animation-delay: var(--sdel, 0s);
+}
+.sky.paused .donors li, .sky.paused .donors li span, .sky.paused .spark { animation-play-state: paused; }
+
+@keyframes float {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  7%   { opacity: var(--o, 1); }
+  43%  { opacity: var(--o, 1); }
+  50%  { transform: translate3d(0, calc(-1 * (var(--h) + 5rem)), 0); opacity: 0; }
+  100% { transform: translate3d(0, calc(-1 * (var(--h) + 5rem)), 0); opacity: 0; }
+}
+@keyframes sway {
+  from { transform: translateX(calc(var(--sw, 12) * -1px)) rotate(-1.4deg); }
+  to   { transform: translateX(calc(var(--sw, 12) * 1px)) rotate(1.4deg); }
+}
+@keyframes spark {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  12%  { opacity: var(--so, .8); }
+  88%  { opacity: var(--so, .8); }
+  100% { transform: translate3d(calc(var(--dx, 0) * 1px), calc(-1 * (var(--h) + 1rem)), 0); opacity: 0; }
+}
+
 /* ---------- подвал ---------- */
-.foot { padding: 34px var(--pad) calc(34px + env(safe-area-inset-bottom)); display: grid; gap: 8px; font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, .45); }
+.foot { padding: 2rem var(--pad) calc(2rem + env(safe-area-inset-bottom)); display: grid; gap: .5rem; font-size: .8125rem; line-height: 1.5; color: rgba(255, 255, 255, .45); }
 .addr { color: rgba(255, 255, 255, .7); overflow-wrap: anywhere; }
 
-/* ---------- появление ---------- */
-@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+/* ---------- появление и живость ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(.9rem); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes glowpulse {
+  0%, 100% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 1.1rem 3rem -1rem rgba(232, 50, 43, .55); }
+  50%      { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 1.3rem 3.6rem -.6rem rgba(232, 50, 43, .85); }
+}
 @media (prefers-reduced-motion: no-preference) {
-  .copy > * { animation: rise .6s cubic-bezier(.2, .7, .2, 1) both; }
+  .copy > * { animation: rise .6s var(--ease) both; }
   .copy > :nth-child(2) { animation-delay: .06s; }
   .copy > :nth-child(3) { animation-delay: .12s; }
-  .way { animation: rise .6s cubic-bezier(.2, .7, .2, 1) both; animation-delay: .18s; }
+  .way { animation: rise .6s var(--ease) both; animation-delay: .18s; }
   .way:nth-child(2) { animation-delay: .26s; }
   .way:nth-child(3) { animation-delay: .34s; }
+  .way-main { animation: rise .6s var(--ease) .18s both, glowpulse 3.6s ease-in-out 1.2s infinite; }
   .photo img { animation: fade 1s ease both; }
-  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-/* ---------- телефоны: три ссылки в шапке не помещаются рядом с названием ---------- */
-@media (max-width: 520px) {
-  .brand-name { display: none; }
-}
-
-/* ---------- узкие телефоны ---------- */
+/* ---------- телефоны ---------- */
+@media (max-width: 520px) { .brand-name { display: none; } }
 @media (max-width: 359px) {
-  :root { --pad: 14px; }
-  .brand-name { display: none; }
-  .txt b { font-size: 17px; }
+  :root { --pad: .875rem; }
+  .txt b { font-size: 1.0625rem; }
+  .way-main .txt b { font-size: 1.1875rem; }
 }
 
 /* ---------- планшет ---------- */
 @media (min-width: 600px) and (max-width: 899px) {
-  :root { --pad: 28px; }
+  :root { --pad: 1.75rem; }
   .photo { aspect-ratio: 16 / 11; max-height: 70vh; }
   .photo img { object-position: 50% 24%; }
-  .shade { background: linear-gradient(180deg, rgba(7, 8, 12, .5) 0, rgba(7, 8, 12, 0) 20%, rgba(7, 8, 12, 0) 52%, rgba(7, 8, 12, .7) 80%, var(--bg) 100%), linear-gradient(rgba(7, 8, 12, .16), rgba(7, 8, 12, .16)); }
-  .copy { margin-top: -150px; }
-  .ways, .crypto, .free, .thanks, .foot { max-width: 640px; margin-inline: auto; width: 100%; }
+  .copy { margin-top: -9.5rem; }
+  .ways, .crypto, .free, .gwrap { max-width: 40rem; margin-inline: auto; width: 100%; }
+  .sky.fly { --h: 34rem; }
 }
 
-/* ---------- компьютер и телевизор: один экран, лицо слева, тёмное крыло справа ---------- */
-/* Размеры растут вместе с шириной окна (vw) до 4K, высота окна двигает только отступы (vh). Тени и точки - настоящие элементы, не псевдо. */
+/* ---------- компьютер и телевизор: лицо слева (липкое), справа контент, внизу «спасибо» ---------- */
+/* Всё меряется в rem, а rem растёт вместе с шириной окна, поэтому та же вёрстка держится от ноутбука до 4K. */
 @media (min-width: 900px) {
-  :root { --pad: 0px; --gut: clamp(32px, 5.8vw, 220px); }
-  .stage {
-    display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 10fr);
-    grid-template-rows: auto auto auto auto auto auto 1fr;
-    min-height: 100vh; min-height: 100svh;
-    overflow: hidden;
+  html { font-size: clamp(14px, 1.05vw, 34px); }
+  :root { --pad: 0px; --gut: 5.6vw; }
+
+  .stage { display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 10fr); align-content: start; min-height: 100vh; min-height: 100svh; }
+  .stage > .photo {
+    grid-column: 1; grid-row: 1 / span 5;
+    position: sticky; top: 0; align-self: start;
+    aspect-ratio: auto; max-height: none; height: 100vh; height: 100svh;
   }
-  .stage > .photo { grid-column: 1; grid-row: 1 / -1; position: relative; aspect-ratio: auto; max-height: none; height: auto; }
-  .photo img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-position: 50% 26%; }
+  .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-position: 50% 26%; }
   .shade {
     background:
       linear-gradient(90deg, rgba(7, 8, 12, 0) 36%, rgba(7, 8, 12, .1) 50%, rgba(7, 8, 12, .45) 68%, rgba(7, 8, 12, .88) 86%, var(--bg) 100%),
       linear-gradient(180deg, rgba(7, 8, 12, .38) 0, rgba(7, 8, 12, 0) 20%, rgba(7, 8, 12, 0) 78%, rgba(7, 8, 12, .55) 100%),
       linear-gradient(rgba(7, 8, 12, .14), rgba(7, 8, 12, .14));
   }
-  .stage > :not(.photo) { grid-column: 2; width: 100%; max-width: 1500px; padding-left: 0; padding-right: var(--gut); }
-  .top { position: static; grid-row: 1; padding-top: clamp(18px, 3.2vh, 48px); padding-bottom: 0; }
-  .mark { width: clamp(70px, 5vw, 150px); }
-  .brand-name { font-size: clamp(17px, 1.2vw, 34px); }
-  .top-links a { font-size: clamp(14px, 1vw, 26px); padding: .5em .9em; }
-  .copy { grid-row: 2; margin-top: 0; padding-top: clamp(16px, 4vh, 90px); padding-bottom: clamp(14px, 2.2vh, 36px); }
-  .eyebrow { font-size: clamp(13px, .9vw, 24px); }
-  h1 { margin-top: clamp(8px, 1.2vh, 20px); font-size: clamp(54px, 5.1vw, 160px); }
-  .lead { margin-top: clamp(10px, 1.5vh, 24px); max-width: 38ch; font-size: clamp(18px, 1.15vw, 32px); }
-  .ways { grid-row: 3; }
-  .crypto { grid-row: 4; padding-top: clamp(18px, 3vh, 56px); }
-  .crypto h2 { font-size: clamp(21px, 1.45vw, 40px); }
-  .crypto > p:not(.crypto-warn) { font-size: clamp(14px, 1vw, 26px); }
-  .wallets { margin-top: clamp(12px, 1.8vh, 26px); gap: clamp(10px, .8vw, 20px); }
-  .wallet { padding: clamp(12px, .9vw, 26px); border-radius: clamp(20px, 1.5vw, 40px); gap: clamp(8px, .7vw, 18px); }
-  .wtxt b { font-size: clamp(16px, 1.1vw, 30px); }
-  .wtxt span { font-size: clamp(12px, .8vw, 22px); }
-  .wallet code { font-size: clamp(12px, .8vw, 22px); padding: clamp(8px, .6vw, 16px) clamp(10px, .8vw, 20px); border-radius: clamp(12px, .9vw, 24px); }
-  .cbtn { min-height: clamp(40px, 2.6vw, 70px); font-size: clamp(14px, .95vw, 25px); padding: .5em 1.2em; }
-  .crypto-warn { font-size: clamp(12px, .8vw, 21px); }
-  .free { grid-row: 5; padding-top: clamp(18px, 3vh, 56px); }
-  .free h2 { font-size: clamp(21px, 1.45vw, 40px); }
-  .free p { font-size: clamp(14px, 1vw, 26px); }
-  .free-row { margin-top: clamp(12px, 1.8vh, 26px); gap: clamp(10px, .6vw, 16px); }
-  .btn { min-height: clamp(44px, 3vw, 80px); padding: .6em 1.25em; font-size: clamp(15px, 1vw, 26px); }
-  .free .stream-note { font-size: clamp(13px, .9vw, 23px); }
-  .thanks { display: none; }
-  .foot { grid-row: 6; padding-top: clamp(14px, 2.2vh, 40px); padding-bottom: clamp(14px, 2.4vh, 40px); font-size: clamp(12px, .8vw, 20px); }
-}
+  .stage > :not(.photo) { grid-column: 2; width: 100%; padding-left: 0; padding-right: var(--gut); }
 
-/* три способа в ряд - только когда хватает ширины */
-@media (min-width: 1200px) {
-  .lead { max-width: none; font-size: clamp(17px, 1.1vw, 32px); }
-  .ways { grid-row: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, .9vw, 24px); }
-  .way { flex-direction: column; align-items: flex-start; gap: 0; min-height: 0; padding: clamp(14px, 1.1vw, 30px); border-radius: clamp(20px, 1.5vw, 40px); position: relative; }
-  .ico { width: clamp(46px, 3.2vw, 90px); height: clamp(46px, 3.2vw, 90px); border-radius: 30%; }
-  .ico svg { width: 52%; height: 52%; }
-  .txt { flex: none; width: 100%; margin-top: clamp(14px, 2.2vh, 36px); }
-  .txt b { font-size: clamp(19px, 1.3vw, 36px); }
-  .txt span { font-size: clamp(13px, .9vw, 24px); }
-  .go { position: absolute; top: clamp(14px, 1.1vw, 30px); right: clamp(14px, 1.1vw, 30px); width: clamp(40px, 2.7vw, 76px); height: clamp(40px, 2.7vw, 76px); }
-  .go svg { width: 46%; height: 46%; }
-}
+  .top { position: static; padding-top: clamp(1rem, 3.4vh, 3rem); padding-bottom: 0; }
+  .mark { width: 5rem; }
+  .brand-name { display: inline; font-size: 1.15rem; }
+  .top-links a { font-size: .95rem; }
 
-.stream-note { font-size: clamp(13px, .9vw, 16px); }
-  .thanks { display: none; }
-  .foot { grid-row: 6; align-self: end; padding-top: clamp(14px, 2.4vh, 28px); padding-bottom: clamp(16px, 3vh, 34px); font-size: clamp(12px, .8vw, 14px); }
-}
+  .copy { margin-top: 0; padding-top: clamp(1.5rem, 9vh, 7rem); padding-bottom: 1.75rem; }
+  .eyebrow { font-size: .9rem; }
+  h1 { margin-top: .75rem; font-size: 4.6rem; }
+  .lead { margin-top: 1rem; max-width: 34ch; font-size: 1.2rem; }
 
-/* три способа в ряд - только когда хватает ширины */
-@media (min-width: 1200px) {
-  .ways { grid-row: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, .9vw, 16px); }
-  .way { flex-direction: column; align-items: flex-start; gap: 0; min-height: 0; padding: clamp(14px, 1.1vw, 20px); border-radius: clamp(20px, 1.5vw, 28px); position: relative; }
-  .ico { width: clamp(46px, 3.2vw, 60px); height: clamp(46px, 3.2vw, 60px); border-radius: 17px; }
-  .txt { flex: none; width: 100%; margin-top: clamp(14px, 2.2vh, 24px); }
-  .txt b { font-size: clamp(19px, 1.3vw, 25px); }
-  .txt span { font-size: clamp(13px, .9vw, 16px); }
-  .go { position: absolute; top: clamp(14px, 1.1vw, 20px); right: clamp(14px, 1.1vw, 20px); width: clamp(40px, 2.7vw, 50px); height: clamp(40px, 2.7vw, 50px); }
-}
+  .ways { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem; }
+  .way-main { grid-column: 1 / -1; min-height: 7rem; }
+  .way-main .txt b { font-size: 1.6rem; }
+  .way-main .txt span { font-size: 1rem; }
+  .way:not(.way-main) { flex-direction: column; align-items: flex-start; gap: 0; min-height: 0; padding: 1.1rem; }
+  .way:not(.way-main) .txt { flex: none; width: 100%; margin-top: 1rem; }
+  .way:not(.way-main) .go { position: absolute; top: 1.1rem; right: 1.1rem; }
 
-@media (min-width: 900px) and (min-height: 1100px) {
-  .stage { min-height: 100vh; min-height: 100svh; }
-}
+  .crypto, .free { padding-top: 2.75rem; }
+  .crypto h2, .free h2 { font-size: 1.7rem; }
+  .crypto > p:not(.crypto-warn), .free > p { font-size: 1.05rem; }
+  .free { padding-bottom: 3rem; }
 
-.stream-note { margin: 14px 0 0; font-size: 14px; line-height: 1.45; color: rgba(255, 255, 255, .7); }
+  /* «Спасибо вам» - широкая полоса: слева имена, справа фото */
+  .gratitude {
+    margin-top: 0; display: grid; grid-template-columns: minmax(0, 10fr) minmax(0, 11fr);
+    min-height: 100vh; min-height: 100svh;
+  }
+  .gwrap { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; max-width: none; margin: 0; padding: clamp(2.5rem, 9vh, 8rem) 2.5vw clamp(1.5rem, 4vh, 4rem) var(--gut); }
+  .gphoto { grid-column: 2; grid-row: 1; aspect-ratio: auto; min-height: 100%; }
+  .gphoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-position: 50% 28%; filter: brightness(.85); }
+  .gshade {
+    background:
+      linear-gradient(270deg, rgba(7, 8, 12, 0) 34%, rgba(7, 8, 12, .1) 48%, rgba(7, 8, 12, .5) 68%, rgba(7, 8, 12, .9) 88%, var(--bg) 100%),
+      linear-gradient(180deg, rgba(7, 8, 12, .3) 0, rgba(7, 8, 12, 0) 20%, rgba(7, 8, 12, 0) 80%, rgba(7, 8, 12, .5) 100%);
+  }
+  .gtext { margin-top: 0; }
+  .gratitude h2 { font-size: 4.4rem; gap: .9rem; }
+  .gratitude-lead { margin-top: .9rem; font-size: 1.25rem; max-width: 28ch; }
+  .sky { margin-top: 1.5rem; flex: 1; min-height: 0; }
+  .donors li { font-size: 1.5rem; }
+  .sky.fly { --h: clamp(24rem, 58svh, 56rem); flex: none; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 90%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 90%, transparent 100%); }
+  .sky.fly .donors li { font-size: calc(1.45rem * var(--s, 1)); }
+  .donors-more { padding-bottom: 0; text-align: left; font-size: 1.05rem; }
+
+  .foot { padding: 2rem var(--gut) 2.25rem; font-size: .85rem; max-width: none; }
+}

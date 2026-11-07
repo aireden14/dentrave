@@ -25,6 +25,7 @@
 <script src="app.js" defer></script>
 </head>
 <body>
+
 <div class="stage" id="top">
 
   <header class="top">
@@ -55,7 +56,7 @@
   </section>
 
   <section class="ways" aria-label="Способы поддержки">
-    <a class="way" href="https://pay.cloudtips.ru/p/e88f9b66" target="_blank" rel="noopener noreferrer">
+    <a class="way way-main" href="https://pay.cloudtips.ru/p/e88f9b66" target="_blank" rel="noopener noreferrer">
       <span class="ico" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M9 21V5h5.5a4.5 4.5 0 0 1 0 9H9M7 17h8"/></svg>
       </span>
@@ -82,24 +83,24 @@
 
   <section class="crypto" aria-label="Крипто">
     <h2>Криптой</h2>
-    <p>Нажмите «Копировать» и вставьте адрес в кошелёк или биржу.</p>
+    <p>Выберите сеть, нажмите «Копировать» и вставьте адрес в кошелёк или биржу.</p>
     <div class="wallets">
-      <div class="wallet">
+      <div class="wallet" data-net="USDT TRC20">
         <div class="wtxt"><b>USDT, сеть TRC20</b><span>Tron</span></div>
         <code>TDuJiTeJf99t3fX841AN2d82nYBekGzvTZ</code>
         <button class="cbtn" type="button" data-copy="TDuJiTeJf99t3fX841AN2d82nYBekGzvTZ" aria-label="Скопировать адрес USDT в сети TRC20 (Tron)">Копировать</button>
       </div>
-      <div class="wallet">
+      <div class="wallet" data-net="EVM">
         <div class="wtxt"><b>ERC20 и все EVM-сети</b><span>Ethereum, Arbitrum, BNB Chain (BEP20), Optimism, Base, Polygon и другие</span></div>
         <code>0x8A94851Ca0f415101533F7eCD9D9f8a379725265</code>
         <button class="cbtn" type="button" data-copy="0x8A94851Ca0f415101533F7eCD9D9f8a379725265" aria-label="Скопировать адрес для Ethereum и всех EVM-сетей (ERC20, BEP20, Arbitrum, Optimism)">Копировать</button>
       </div>
-      <div class="wallet">
+      <div class="wallet" data-net="Solana">
         <div class="wtxt"><b>Solana</b><span>SOL и токены сети Solana</span></div>
         <code>FCLWTr9eG371x26NEVd2N9ucoYqgGYzqdayM4wzNDB7k</code>
         <button class="cbtn" type="button" data-copy="FCLWTr9eG371x26NEVd2N9ucoYqgGYzqdayM4wzNDB7k" aria-label="Скопировать адрес в сети Solana">Копировать</button>
       </div>
-      <div class="wallet">
+      <div class="wallet" data-net="Bitcoin">
         <div class="wtxt"><b>Bitcoin</b><span>BTC, только сеть Bitcoin</span></div>
         <code>bc1q7mzrccc0u37mglz9jafmezpzfsd84qvfvjjr7j</code>
         <button class="cbtn" type="button" data-copy="bc1q7mzrccc0u37mglz9jafmezpzfsd84qvfvjjr7j" aria-label="Скопировать адрес Bitcoin (BTC)">Копировать</button>
@@ -117,21 +118,56 @@
       <a class="btn" href="https://www.twitch.tv/dentraveai" target="_blank" rel="noopener noreferrer">Twitch</a>
     </div>
     <p class="stream-note">Как будет свободнее время, начну стримить на Twitch. Так что пока можно просто подписаться!</p>
-  </section>
-
-  <section class="thanks" aria-label="Спасибо">
-    <figure>
-      <img src="img/thanks.webp" width="1200" height="900" alt="Ден разводит руки в благодарность" loading="lazy">
-      <figcaption><b>Спасибо, что вы здесь</b><span>Ден</span></figcaption>
-    </figure>
     <button class="btn share" id="share" type="button" hidden>Отправить ссылку другу</button>
   </section>
 
-  <footer class="foot">
-    <p>Кнопки выше ведут прямо на сайты платёжных сервисов, крипто-адреса нужны только для получения. На этой странице нет форм оплаты, аналитики и сторонних скриптов.</p>
-    <p>Адрес страницы: <span class="addr">dentrave.com</span></p>
-  </footer>
-
 </div>
+
+<section class="gratitude" aria-labelledby="gratitude-title">
+  <figure class="gphoto">
+    <img src="img/thanks.webp" width="1200" height="900" alt="Ден разводит руки в благодарность" loading="lazy">
+    <span class="gshade" aria-hidden="true"></span>
+  </figure>
+  <div class="gwrap">
+    <div class="gtext">
+      <h2 id="gratitude-title">
+        <svg class="heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-7.2-4.6-9.6-9.3A5.6 5.6 0 0 1 12 5.8a5.6 5.6 0 0 1 9.6 5.9C19.2 16.4 12 21 12 21z"/></svg>
+        Спасибо вам
+      </h2>
+      <p class="gratitude-lead">Вы уже поддержали канал. Спасибо, что вы рядом.</p>
+    </div>
+    <div class="sky" id="sky">
+      <span class="glow" aria-hidden="true"></span>
+      <ul class="donors" id="donors" aria-label="Люди, которые поддержали канал">
+        <li>Роман</li>
+        <li>dinamid</li>
+        <li>Маликов</li>
+        <li>Подписчик</li>
+        <li>Артём М.</li>
+        <li>Alina G.</li>
+        <li>Valeriy R.</li>
+        <li>Ametrin Y.</li>
+        <li>Лёша</li>
+        <li>iGor</li>
+        <li>Alexish</li>
+        <li>Kosmos0319</li>
+        <li>Михаил</li>
+        <li>Артём</li>
+        <li>Юра</li>
+        <li>Дамескус</li>
+        <li>КролИИчья нора</li>
+        <li>MeiYO S.</li>
+        <li>Человек-без-ии-агента-(пока)</li>
+      </ul>
+    </div>
+    <p class="donors-more">и ещё 7 человек, которые не оставили имя</p>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>Кнопки выше ведут прямо на сайты платёжных сервисов, крипто-адреса нужны только для получения. На этой странице нет форм оплаты, аналитики и сторонних скриптов.</p>
+  <p>Адрес страницы: <span class="addr">dentrave.com</span></p>
+</footer>
+
 </body>
 </html>

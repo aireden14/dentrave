@@ -171,6 +171,36 @@ try:
 except ImportError:
     pass
 
+# 7. «Спасибо вам»: имена поддержавших плывут вверх. Только имена, без сумм и контактов; CSP не пускает inline-стили.
+for tag, a in p.tags:
+    if "style" in a: fail(f"inline-атрибут style в <{tag}> (CSP его блокирует): задавать через CSS-переменные из app.js")
+gm = re.search(r'<section class="gratitude".*?</section>', html, re.S)
+if not gm:
+    fail("нет блока «Спасибо вам» (<section class=\"gratitude\">)")
+else:
+    g = gm.group(0)
+    if html.find('class="gratitude"') < html.find('class="free"'): fail("«Спасибо вам» должно стоять после блока «Нет возможности донатить»")
+    if "Спасибо вам" not in g: fail("в блоке нет заголовка «Спасибо вам»")
+    um = re.search(r'<ul class="donors"[^>]*>(.*?)</ul>', g, re.S)
+    names = re.findall(r"<li>(.*?)</li>", um.group(1), re.S) if um else []
+    if not names: fail("в блоке нет списка имён (<ul class=\"donors\"><li>…)")
+    if len(set(n.strip() for n in names)) != len(names): fail("имена в списке «Спасибо вам» повторяются")
+    for n in names:
+        n = n.strip()
+        if not (1 <= len(n) <= 40): fail(f"имя длиной не 1-40 символов: {n!r}")
+        if re.search(r"[@+]|\d{5,}|₽|руб|\$|€|t\.me|https?:", n, re.I): fail(f"в имени контакт, телефон или сумма (на сайт только имя): {n!r}")
+        if "<" in n: fail(f"в имени лишняя разметка: {n!r}")
+    if 'id="sky"' not in g or 'id="donors"' not in g: fail("нужны id=\"sky\" и id=\"donors\": за них цепляется app.js")
+cssf = ROOT / "style.css"
+if cssf.exists():
+    t = cssf.read_text(encoding="utf-8")
+    if not re.search(r"@keyframes\s+float\b", t): fail("в style.css нет анимации @keyframes float (плавающие имена)")
+    if not re.search(r"prefers-reduced-motion:\s*reduce", t): fail("в style.css нет ветки prefers-reduced-motion: reduce (имена без движения)")
+if appjs.exists():
+    t = appjs.read_text(encoding="utf-8")
+    for need, label in (("IntersectionObserver", "паузу анимации вне экрана"), ("prefers-reduced-motion", "уважение к «уменьшить движение»"), ("setProperty", "задание позиций через CSSOM (CSP)")):
+        if need not in t: fail(f"в app.js нет {need}: нужен ради {label}")
+
 if errors:
     print("КРАСНЫЙ:"); [print(" -", e) for e in errors]; sys.exit(1)
 print(f"ЗЕЛЁНЫЙ: ссылок в белом списке {len(ALLOWED_EXTERNAL)}, вес страницы ~{total // 1024} КБ")
