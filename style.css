@@ -101,6 +101,35 @@ h1 { margin-top: 10px; font-size: clamp(42px, 13vw, 68px); line-height: .98; let
 .btn:hover { background: rgba(255, 255, 255, .15); }
 .btn:active { transform: scale(.98); }
 
+/* ---------- крипта ---------- */
+.crypto { padding: 34px var(--pad) 0; }
+.crypto h2 { font-size: 22px; line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
+.crypto > p:not(.crypto-warn) { margin-top: 8px; color: var(--mute); }
+.wallets { margin-top: 16px; display: grid; gap: 12px; }
+.wallet {
+  display: grid; gap: 10px; grid-template-rows: 1fr auto auto; padding: 14px;
+  background: var(--card); border-radius: 24px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+.wtxt { display: grid; gap: 2px; align-content: start; min-width: 0; }
+.wtxt b { font-size: 17px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
+.wtxt span { font-size: 13px; line-height: 1.35; color: var(--mute); overflow-wrap: anywhere; }
+.wallet code {
+  display: block; padding: 10px 12px; border-radius: 14px; background: rgba(255, 255, 255, .06);
+  font: 500 13px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: rgba(255, 255, 255, .88);
+  overflow-wrap: anywhere; word-break: break-all;
+}
+.cbtn {
+  min-height: 44px; padding: 10px 18px; border: 0; border-radius: 999px; cursor: pointer;
+  font-size: 15px; font-weight: 600; background: rgba(255, 255, 255, .09);
+  transition: background .18s ease, transform .18s ease; -webkit-tap-highlight-color: transparent;
+}
+.cbtn:hover { background: rgba(255, 255, 255, .15); }
+.cbtn:active { transform: scale(.98); }
+.cbtn.done { background: var(--red); }
+.crypto-warn { margin-top: 12px; font-size: 13px; line-height: 1.45; color: rgba(255, 255, 255, .7); }
+@media (min-width: 600px) { .wallets { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 /* ---------- спасибо ---------- */
 .thanks { padding: 34px var(--pad) 0; }
 .thanks figure { position: relative; border-radius: 26px; overflow: hidden; }
@@ -148,7 +177,7 @@ h1 { margin-top: 10px; font-size: clamp(42px, 13vw, 68px); line-height: .98; let
   .photo img { object-position: 50% 24%; }
   .shade { background: linear-gradient(180deg, rgba(7, 8, 12, .5) 0, rgba(7, 8, 12, 0) 20%, rgba(7, 8, 12, 0) 52%, rgba(7, 8, 12, .7) 80%, var(--bg) 100%), linear-gradient(rgba(7, 8, 12, .16), rgba(7, 8, 12, .16)); }
   .copy { margin-top: -150px; }
-  .ways, .free, .thanks, .foot { max-width: 640px; margin-inline: auto; width: 100%; }
+  .ways, .crypto, .free, .thanks, .foot { max-width: 640px; margin-inline: auto; width: 100%; }
 }
 
 /* ---------- компьютер и телевизор: один экран, лицо слева, тёмное крыло справа ---------- */
@@ -157,7 +186,7 @@ h1 { margin-top: 10px; font-size: clamp(42px, 13vw, 68px); line-height: .98; let
   :root { --pad: 0px; --gut: clamp(32px, 5.8vw, 220px); }
   .stage {
     display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 10fr);
-    grid-template-rows: auto auto auto auto auto 1fr;
+    grid-template-rows: auto auto auto auto auto auto 1fr;
     min-height: 100vh; min-height: 100svh;
     overflow: hidden;
   }
@@ -179,14 +208,24 @@ h1 { margin-top: 10px; font-size: clamp(42px, 13vw, 68px); line-height: .98; let
   h1 { margin-top: clamp(8px, 1.2vh, 20px); font-size: clamp(54px, 5.1vw, 160px); }
   .lead { margin-top: clamp(10px, 1.5vh, 24px); max-width: 38ch; font-size: clamp(18px, 1.15vw, 32px); }
   .ways { grid-row: 3; }
-  .free { grid-row: 4; padding-top: clamp(18px, 3vh, 56px); }
+  .crypto { grid-row: 4; padding-top: clamp(18px, 3vh, 56px); }
+  .crypto h2 { font-size: clamp(21px, 1.45vw, 40px); }
+  .crypto > p:not(.crypto-warn) { font-size: clamp(14px, 1vw, 26px); }
+  .wallets { margin-top: clamp(12px, 1.8vh, 26px); gap: clamp(10px, .8vw, 20px); }
+  .wallet { padding: clamp(12px, .9vw, 26px); border-radius: clamp(20px, 1.5vw, 40px); gap: clamp(8px, .7vw, 18px); }
+  .wtxt b { font-size: clamp(16px, 1.1vw, 30px); }
+  .wtxt span { font-size: clamp(12px, .8vw, 22px); }
+  .wallet code { font-size: clamp(12px, .8vw, 22px); padding: clamp(8px, .6vw, 16px) clamp(10px, .8vw, 20px); border-radius: clamp(12px, .9vw, 24px); }
+  .cbtn { min-height: clamp(40px, 2.6vw, 70px); font-size: clamp(14px, .95vw, 25px); padding: .5em 1.2em; }
+  .crypto-warn { font-size: clamp(12px, .8vw, 21px); }
+  .free { grid-row: 5; padding-top: clamp(18px, 3vh, 56px); }
   .free h2 { font-size: clamp(21px, 1.45vw, 40px); }
   .free p { font-size: clamp(14px, 1vw, 26px); }
   .free-row { margin-top: clamp(12px, 1.8vh, 26px); gap: clamp(10px, .6vw, 16px); }
   .btn { min-height: clamp(44px, 3vw, 80px); padding: .6em 1.25em; font-size: clamp(15px, 1vw, 26px); }
   .free .stream-note { font-size: clamp(13px, .9vw, 23px); }
   .thanks { display: none; }
-  .foot { grid-row: 5; padding-top: clamp(14px, 2.2vh, 40px); padding-bottom: clamp(14px, 2.4vh, 40px); font-size: clamp(12px, .8vw, 20px); }
+  .foot { grid-row: 6; padding-top: clamp(14px, 2.2vh, 40px); padding-bottom: clamp(14px, 2.4vh, 40px); font-size: clamp(12px, .8vw, 20px); }
 }
 
 /* три способа в ряд - только когда хватает ширины */
@@ -205,7 +244,7 @@ h1 { margin-top: 10px; font-size: clamp(42px, 13vw, 68px); line-height: .98; let
 
 .stream-note { font-size: clamp(13px, .9vw, 16px); }
   .thanks { display: none; }
-  .foot { grid-row: 5; align-self: end; padding-top: clamp(14px, 2.4vh, 28px); padding-bottom: clamp(16px, 3vh, 34px); font-size: clamp(12px, .8vw, 14px); }
+  .foot { grid-row: 6; align-self: end; padding-top: clamp(14px, 2.4vh, 28px); padding-bottom: clamp(16px, 3vh, 34px); font-size: clamp(12px, .8vw, 14px); }
 }
 
 /* три способа в ряд - только когда хватает ширины */

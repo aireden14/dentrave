@@ -19,6 +19,15 @@ ALLOWED_EXTERNAL = set(DONATE.values()) | {
     "https://t.me/dentraveai",
     "https://www.twitch.tv/dentraveai",
 }
+# Адреса для приёма крипты, присланные Денисом 08.11.2026, дословно. Только получение, никаких ключей и seed-фраз.
+CRYPTO = {
+    "trc20": "TDuJiTeJf99t3fX841AN2d82nYBekGzvTZ",
+    "evm": "0x8A94851Ca0f415101533F7eCD9D9f8a379725265",
+    "solana": "FCLWTr9eG371x26NEVd2N9ucoYqgGYzqdayM4wzNDB7k",
+    "btc": "bc1q7mzrccc0u37mglz9jafmezpzfsd84qvfvjjr7j",
+}
+ADDR_PATTERNS = [r"\b0x[0-9a-fA-F]{40}\b", r"\bT[1-9A-HJ-NP-Za-km-z]{33}\b", r"\bbc1[ac-hj-np-z02-9]{11,71}\b",
+                 r"\b[1-9A-HJ-NP-Za-km-z]{32,44}\b"]
 SECRET_PATTERNS = [r"gsk_[A-Za-z0-9]{10}", r"ghp_[A-Za-z0-9]{10}", r"napi_[A-Za-z0-9]{10}", r"rnd_[A-Za-z0-9]{10}",
                    r"sk-ant", r"\b\d{8,10}:[A-Za-z0-9_-]{30,}\b", r"BEGIN [A-Z ]*PRIVATE KEY", r"michelpct"]
 MAX_IMG = 350 * 1024
@@ -58,6 +67,43 @@ for tag, a in p.tags:
             if not (ROOT / href.split("?")[0].split("#")[0]).exists(): fail(f"битая внутренняя ссылка: {href}")
 for k in DONATE:
     if k not in seen_donate: fail(f"в index.html нет ссылки на донат «{k}» ({DONATE[k]})")
+
+# 1б. крипто-адреса: ровно четыре, дословно; у каждого <code> с адресом и <button type="button" data-copy>
+class C(HTMLParser):
+    def __init__(self):
+        super().__init__(); self.in_code = False; self.codes = []; self.buttons = []
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "code": self.in_code = True; self.codes.append("")
+        if tag == "button" and "data-copy" in a: self.buttons.append(a)
+    def handle_endtag(self, tag):
+        if tag == "code": self.in_code = False
+    def handle_data(self, d):
+        if self.in_code: self.codes[-1] += d
+c = C(); c.feed(html)
+codes = [x.strip() for x in c.codes]
+copy_vals = [b["data-copy"] for b in c.buttons]
+for k, addr in CRYPTO.items():
+    if codes.count(addr) != 1: fail(f"адрес «{k}» должен стоять в <code> ровно один раз и дословно: {addr}")
+    if copy_vals.count(addr) != 1: fail(f"у адреса «{k}» нет ровно одной кнопки копирования data-copy")
+for b in c.buttons:
+    if b.get("type") != "button": fail("кнопка копирования без type=\"button\"")
+    if not b.get("aria-label"): fail("у кнопки копирования нет aria-label (какая сеть)")
+    if b["data-copy"] not in CRYPTO.values(): fail(f"data-copy не из белого списка: {b['data-copy']}")
+for f in (index, ROOT / "style.css", ROOT / "app.js"):
+    if not f.exists(): continue
+    t = f.read_text(encoding="utf-8")
+    for pat in ADDR_PATTERNS:
+        for m in re.findall(pat, t):
+            if m not in CRYPTO.values(): fail(f"посторонний крипто-адрес в {f.name}: {m}")
+pos = {s: html.find(f'class="{s}"') for s in ("ways", "crypto", "free")}
+if min(pos.values()) < 0 or not (pos["ways"] < pos["crypto"] < pos["free"]):
+    fail("блок крипты должен стоять после способов (CloudTips первый) и до «Нет возможности донатить»")
+if 'class="crypto-warn"' not in html: fail("нет предупреждения про выбор сети (class=\"crypto-warn\")")
+appjs = ROOT / "app.js"
+if appjs.exists():
+    t = appjs.read_text(encoding="utf-8")
+    if "data-copy" not in t or "clipboard" not in t: fail("app.js не обрабатывает кнопки копирования (data-copy + clipboard)")
 
 # 2. внешние ресурсы и опасные теги
 for tag, a in p.tags:
